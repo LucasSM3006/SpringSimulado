@@ -37,8 +37,8 @@ public class BatchController {
 		return new ResponseEntity<>(batchService.getAllByName(name), HttpStatus.OK);
 	}
 	
-	@GetMapping("/listByDate")
-	public void listByDate() {
-		
+	@GetMapping("/listByDate/{date}")
+	public ResponseEntity<List<BatchDTO>> listByDate(@PathVariable("date") String date) {
+		return new ResponseEntity<>(batchService.getAllByDate(date), HttpStatus.OK);
 	}
 }
