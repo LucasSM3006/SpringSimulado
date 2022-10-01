@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.simuladoprova.SimuladoParaProva.model.Product;
 import com.simuladoprova.SimuladoParaProva.repos.ProductRepository;
+import com.simuladoprova.SimuladoParaProva.repos.dto.AvailableProductsDTO;
 import com.simuladoprova.SimuladoParaProva.repos.dto.ListProductsDTO;
 import com.simuladoprova.SimuladoParaProva.repos.dto.NewProductDTO;
+import com.simuladoprova.SimuladoParaProva.repos.dto.ProductsByCategoryDTO;
 import com.simuladoprova.SimuladoParaProva.repos.dto.SetProductSellPriceDTO;
 
 @Service
@@ -40,10 +43,10 @@ public class ProductService {
 
 	public void setPrice(int id, SetProductSellPriceDTO product) {
 		Optional<Product> findProduct = productRepository.findById(id);
-		
-		if(findProduct.isPresent()) {
+
+		if (findProduct.isPresent()) {
 			Product existingProduct = findProduct.get();
-			
+
 			existingProduct.setSalePrice(product.getSalePrice());
 			productRepository.save(existingProduct);
 			setMessage("Product with ID '" + id + "' Changed successfully.");
@@ -51,8 +54,8 @@ public class ProductService {
 			setMessage("Product with ID '" + id + "' Does not exist.");
 		}
 	}
-	
-	public List<ListProductsDTO> returnAll() {
+
+	public List<ListProductsDTO> getAll() {
 		List<Product> products = (List<Product>) productRepository.findAll();
 		List<ListProductsDTO> stream = products.stream().map(product -> {
 			ListProductsDTO productDTO = new ListProductsDTO();
@@ -65,10 +68,46 @@ public class ProductService {
 			productDTO.setTitle(product.getTitle());
 			return productDTO;
 		}).collect(Collectors.toList());
+
+		return stream;
+	}
+
+	public List<AvailableProductsDTO> getAllAvailableProducts() {
+		List<Product> products = (List<Product>) productRepository.findAllAvailableProducts();
+
+		List<AvailableProductsDTO> stream = products.stream().map(product -> {
+			AvailableProductsDTO productDTO = new AvailableProductsDTO();
+			productDTO.setProduct_id(product.getProduct_id());
+			productDTO.setAvailable(product.isAvailable());
+			productDTO.setCategory(product.getCategory());
+			productDTO.setDescription(product.getDescription());
+			productDTO.setProductionPrice(product.getProductionPrice());
+			productDTO.setSalePrice(product.getSalePrice());
+			productDTO.setTitle(product.getTitle());
+			return productDTO;
+		}).collect(Collectors.toList());
+
+		return stream;
+	}
+
+	public List<ProductsByCategoryDTO> getAllByCategory(String category) {
+		List<Product> products = (List<Product>) productRepository.findAllByCategory(category);
+		
+		List<ProductsByCategoryDTO> stream = products.stream().map(product -> {
+			ProductsByCategoryDTO productDTO = new ProductsByCategoryDTO();
+			productDTO.setProduct_id(product.getProduct_id());
+			productDTO.setAvailable(product.isAvailable());
+			productDTO.setCategory(product.getCategory());
+			productDTO.setDescription(product.getDescription());
+			productDTO.setProductionPrice(product.getProductionPrice());
+			productDTO.setSalePrice(product.getSalePrice());
+			productDTO.setTitle(product.getTitle());
+			return productDTO;
+		}).collect(Collectors.toList());
 		
 		return stream;
 	}
-	
+
 	public void setMessage(String msg) {
 		message = msg;
 	}
@@ -78,4 +117,5 @@ public class ProductService {
 		message = ""; // Resets the message every time to not get repeated errors.
 		return msg;
 	}
+
 }
