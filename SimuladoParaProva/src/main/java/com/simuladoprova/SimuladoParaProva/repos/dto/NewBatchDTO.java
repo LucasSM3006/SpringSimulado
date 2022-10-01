@@ -1,11 +1,11 @@
 package com.simuladoprova.SimuladoParaProva.repos.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class NewBatchDTO {
 	private int batch_id;
 	private String name;
-	private Date date;
+	private LocalDate date;
 	private int product_id;
 
 	public int getBatch_id() {
@@ -24,11 +24,11 @@ public class NewBatchDTO {
 		this.name = name;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
