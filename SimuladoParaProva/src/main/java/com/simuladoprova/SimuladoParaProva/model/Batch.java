@@ -1,7 +1,6 @@
 package com.simuladoprova.SimuladoParaProva.model;
 
-import java.util.Date;
-
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +18,7 @@ public class Batch {
 	private int batch_id;
 	private String name;
 	@Column(name = "batch_date")
-	private Date date;
+	private LocalDate date;
 
 	@ManyToOne
 	@JoinColumn(name = "product")
@@ -41,11 +40,11 @@ public class Batch {
 		this.name = name;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
