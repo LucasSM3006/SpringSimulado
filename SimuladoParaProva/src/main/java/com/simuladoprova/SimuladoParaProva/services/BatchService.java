@@ -1,5 +1,6 @@
 package com.simuladoprova.SimuladoParaProva.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,6 +49,35 @@ public class BatchService {
 	public List<BatchDTO> getAllByName(String name) {
 		Optional<Batch> batches = batchRepository.findByName(name);
 		
+		List<BatchDTO> batchDTO = buildList(batches);
+		
+		return batchDTO;
+	}
+	
+	public List<BatchDTO> getAllByDate(String date) {
+		LocalDate localDate = LocalDate.parse(date);
+		
+		List<Batch> batches = batchRepository.findByDate(localDate);
+		
+		List<BatchDTO> batchDTO = buildList(batches);
+		
+		return batchDTO;
+	}
+	
+	public List<BatchDTO> buildList(Optional<Batch> batches) {
+		List<BatchDTO> batchDTO = batches.stream().map(batch -> {
+			BatchDTO b = new BatchDTO();
+			b.setBatch_id(batch.getBatch_id());
+			b.setDate(batch.getDate());
+			b.setName(batch.getName());
+			b.setProduct_id(batch.getProduct().getProduct_id());
+			return b;
+		}).collect(Collectors.toList());
+		
+		return batchDTO;
+	}
+	
+	public List<BatchDTO> buildList(List<Batch> batches) {
 		List<BatchDTO> batchDTO = batches.stream().map(batch -> {
 			BatchDTO b = new BatchDTO();
 			b.setBatch_id(batch.getBatch_id());
