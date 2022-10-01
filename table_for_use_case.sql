@@ -24,3 +24,7 @@ alter table product
 select * from product;
 
 delete from product;
+
+select * from product where available = true;
+
+select * from batch;
