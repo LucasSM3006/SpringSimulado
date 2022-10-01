@@ -27,8 +27,6 @@ public class ProductService {
 	private String message;
 
 	public void save(NewProductDTO newProductDTO) {
-		System.out.println("Ok.");
-
 		Product product = new Product();
 		product.setTitle(newProductDTO.getTitle());
 		product.setSalePrice(0);
