@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.simuladoprova.SimuladoParaProva.repos.dto.AvailableProductsDTO;
 import com.simuladoprova.SimuladoParaProva.repos.dto.ListProductsDTO;
 import com.simuladoprova.SimuladoParaProva.repos.dto.NewProductDTO;
+import com.simuladoprova.SimuladoParaProva.repos.dto.ProductsByCategoryDTO;
 import com.simuladoprova.SimuladoParaProva.repos.dto.SetProductSellPriceDTO;
 import com.simuladoprova.SimuladoParaProva.services.ProductService;
 
@@ -45,14 +47,16 @@ public class ProductController {
 
 	@GetMapping("/list")
 	public ResponseEntity<List<ListProductsDTO>> listProducts() {
-		return new ResponseEntity<>(productService.returnAll(), HttpStatus.OK);
+		return new ResponseEntity<>(productService.getAll(), HttpStatus.OK);
 	}
-
-	public void readProduct() {
-
+	
+	@GetMapping("/listAvailable")
+	public ResponseEntity<List<AvailableProductsDTO>> listAvailableProducts() {
+		return new ResponseEntity<>(productService.getAllAvailableProducts(), HttpStatus.OK);
 	}
-
-	public void deleteProduct() {
-
+	
+	@GetMapping("/listByCategory/{category}")
+	public ResponseEntity<List<ProductsByCategoryDTO>> listProductsByCategory(@PathVariable("category") String category) {
+		return new ResponseEntity<>(productService.getAllByCategory(category), HttpStatus.OK);
 	}
 }
